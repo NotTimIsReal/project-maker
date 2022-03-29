@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 NotTimIsReal
 
 */
 package cmd
@@ -7,6 +7,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/fatih/color"
@@ -67,11 +68,31 @@ var buildCmd = &cobra.Command{
 			fmt.Printf("%s is not a valid project Add it or use a valid project", args[0])
 			os.Exit(1)
 		}
-		fmt.Printf(color.BlueString(fmt.Sprintf("Found The Code Template At %s, Now Cloning", repo)))
-		git.PlainClone(args[1], false, &git.CloneOptions{
+		fmt.Printf(color.BlueString(fmt.Sprintf("Found The Code Template At %s, Now Cloning \n", repo)))
+		_, err = git.PlainClone(args[1], false, &git.CloneOptions{
 			URL: repo,
 		})
+		if err != nil {
+			fmt.Print(color.RedString(fmt.Sprintf("Error Cloning %s, this is likely due to a git repo already existing in %s", repo, args[1])))
+			os.Exit(1)
+		}
 		fmt.Printf(color.GreenString("Project %s has been created at %s, Now Running Set Up Script", args[0], args[1]))
+		s = spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+		s.Start()
+		s.Suffix = color.GreenString(fmt.Sprintf(" Running Set Up Script..."))
+		//cd into k and run main.go
+		_, err = os.ReadFile(fmt.Sprintf("%s/project-setup.go", args[1]))
+		if err != nil {
+			s.Stop()
+			fmt.Print(color.RedString("Error: project-setup.go was not found in the project directory"))
+			os.Exit(1)
+		}
+		err = exec.Command("sh", "-c", fmt.Sprintf("cd %s && go run project-setup.go", args[1])).Run()
+		if err != nil {
+			s.Stop()
+			fmt.Print(color.RedString("Something happened while running setup-script, Make Sure You Have Made A Valid File"))
+		}
+		s.Stop()
 
 	},
 }
