@@ -1,1 +1,4 @@
-[{"js-cli":"https://github.com/NotTimIsReal/js-cli-base", "python-chatbot":"https://github.com/YourBetterAssistant/chatbot"}]
+{
+  "discord-bot-js": "https://github.com/YourBetterAssistant/yourbetterassistant",
+  "python-chatbot": "https://github.com/YourBetterAssistant/chatbot"
+}

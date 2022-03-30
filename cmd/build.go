@@ -5,6 +5,7 @@ Copyright © 2022 NotTimIsReal
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -13,7 +14,6 @@ import (
 	"github.com/fatih/color"
 	git "gopkg.in/src-d/go-git.v4"
 
-	"encoding/json"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -21,14 +21,18 @@ import (
 )
 
 // buildCmd represents the build command
-const defaultProjects string = `[{"js-cli":"https://github.com/NotTimIsReal/js-cli-base", "python-chatbot":"https://github.com/YourBetterAssistant/chatbot"}]`
+const defaultProjects string = `{
+  "discord-bot-js": "https://github.com/YourBetterAssistant/yourbetterassistant",
+  "python-chatbot": "https://github.com/YourBetterAssistant/chatbot"
+}
+`
 
 var buildCmd = &cobra.Command{
-	Use:       "build",
+	Use:       "build [project_name] [project-dir]",
 	Aliases:   []string{"init", "b", "i"},
 	Example:   "project-maker build js-cli -D project_dir",
 	Args:      cobra.MinimumNArgs(2),
-	ValidArgs: []string{"js-cli", "python-chatbot", "go-cli"},
+	ValidArgs: []string{"js-cli", "python-chatbot"},
 	Short:     "Builds and initialised a new project",
 	Long:      `Builds and insitialises a new project. Requrires dir name and project type`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -56,41 +60,52 @@ var buildCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		s.Stop()
-		//projects looks like [{"something":"something"}, {"e":"e"}]}}]
-		var projects []map[string]string
-		var repo string
+		//projects looks like {"something":"something"}
+		var projects map[string]string
 		json.Unmarshal(content, &projects)
-		for _, project := range projects {
-			//access js-cli
-			repo = project[args[0]]
-		}
+		var repo = projects[args[0]]
 		if repo == "" {
 			fmt.Printf("%s is not a valid project Add it or use a valid project", args[0])
 			os.Exit(1)
 		}
-		fmt.Printf(color.BlueString(fmt.Sprintf("Found The Code Template At %s, Now Cloning \n", repo)))
+		s = spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+
+		s.Start()
+		s.Suffix = color.BlueString(fmt.Sprintf(" Found The Code Template At %s, Now Cloning...", repo))
 		_, err = git.PlainClone(args[1], false, &git.CloneOptions{
 			URL: repo,
 		})
 		if err != nil {
+			s.Stop()
 			fmt.Print(color.RedString(fmt.Sprintf("Error Cloning %s, this is likely due to a git repo already existing in %s", repo, args[1])))
 			os.Exit(1)
 		}
+		s.Stop()
 		fmt.Printf(color.GreenString("Project %s has been created at %s, Now Running Set Up Script", args[0], args[1]))
 		s = spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
 		s.Start()
-		s.Suffix = color.GreenString(fmt.Sprintf(" Running Set Up Script..."))
+		s.Suffix = color.GreenString(fmt.Sprintf(" Running Set Up Script... This Might Take A While"))
 		//cd into k and run main.go
-		_, err = os.ReadFile(fmt.Sprintf("%s/project-setup.go", args[1]))
+		_, err = os.ReadFile(fmt.Sprintf("%s/project-setup.py", args[1]))
 		if err != nil {
 			s.Stop()
-			fmt.Print(color.RedString("Error: project-setup.go was not found in the project directory"))
+			fmt.Print(color.RedString("Error: project-setup.py was not found in the project directory"))
 			os.Exit(1)
 		}
-		err = exec.Command("sh", "-c", fmt.Sprintf("cd %s && go run project-setup.go", args[1])).Run()
+		//run and show output
+		var command = exec.Command("python3", "project-setup.py")
+		command.Dir = args[1]
+		status, err := command.Output()
+		if strings.Contains(string(status), "setup.project.status.sucess") {
+			s.Stop()
+			fmt.Print(color.GreenString("Project Setup Sucessful"))
+			os.Exit(0)
+		}
 		if err != nil {
 			s.Stop()
-			fmt.Print(color.RedString("Something happened while running setup-script, Make Sure You Have Made A Valid File"))
+			fmt.Print(err)
+
+			fmt.Print(color.RedString("Something happened while running setup-script, Make Sure You Have Made A Valid project-setup.py file"))
 		}
 		s.Stop()
 
