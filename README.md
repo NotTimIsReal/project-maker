@@ -8,4 +8,4 @@
 
 ## Multi-Platform
 
-<video src="images/output.gif"></video>
+<img src="images/output.gif"></video>
