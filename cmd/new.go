@@ -17,10 +17,11 @@ import (
 
 // newCmd represents the new command
 var newCmd = &cobra.Command{
-	Use:   "new [project_name] [project_url]",
-	Short: "Create New Project",
-	Long:  `Creates a new project. Requires a project name and a project URL with github or gitlab.`,
-	Args:  cobra.MinimumNArgs(2),
+	Use:     "new [project_name] [project_url]",
+	Short:   "Create New Project",
+	Long:    `Creates a new project. Requires a project name and a project URL with github or gitlab.`,
+	Args:    cobra.MinimumNArgs(2),
+	Aliases: []string{"n"},
 	Run: func(cmd *cobra.Command, args []string) {
 		exeLocation, err := os.Executable()
 		exeLocation = strings.Join(strings.Split(exeLocation, "/")[:len(strings.Split(exeLocation, "/"))-1], "/")
