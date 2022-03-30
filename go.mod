@@ -1,7 +1,5 @@
 module github.com/NotTimIsReal/project-maker
-
 go 1.18
-
 require github.com/spf13/cobra v1.4.0
 
 require (
@@ -19,8 +17,8 @@ require (
 )
 
 require (
-	github.com/briandowns/spinner v1.18.1 // indirect
-	github.com/fatih/color v1.13.0 // indirect
+	github.com/briandowns/spinner v1.18.1
+	github.com/fatih/color v1.13.0
 	github.com/go-git/go-git v4.7.0+incompatible
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
