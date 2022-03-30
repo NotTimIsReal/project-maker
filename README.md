@@ -66,6 +66,14 @@ print("setup.project.status.sucess")
 
 As seen in the example you need to print "setup.project.status.sucess" for the tool to end successfully. It is recommended to also use subprocess rather than `os.system`. In order for a more cleaner output make sure any stdout and stderr are send to subprocess.DEVNULL like in the example.
 
+Then Upload Your Code To A https Git server such as github or gitlab.
+
+Then Run `project-maker new <project-name> <project-url>`
+
+This will locally save that project.
+
+And To Build it you run `project-maker build <project-name> <dir-name>`
+
 # Credits
 
 - NotTimIsReal - Creator of the project
