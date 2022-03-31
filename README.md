@@ -17,16 +17,33 @@
 
 # Installation
 
-Using the command go command line to install is the preferred way
+Using the pre compiled executables in the releases in github is the preferred method but you can compile it yourself with go as shown in the command below.
 
 ```sh
 go install github.com/NotTimIsReal/project-maker
 
 ```
 
-Manually Compiling can be done but is not recommended.
+or
 
-## Usage
+```
+git clone https://github.com/NotTimIsReal/project-maker
+cd project-maker
+go install
+go build
+```
+
+Once you have the executables place them in one of the following locations. go install already achieves this.
+
+## Linux And MacOS:
+
+`/usr/local/bin/project-maker`
+
+## Windows:
+
+`C:\Program Files\project-maker`
+
+# Usage
 
 ### Building
 
@@ -73,6 +90,14 @@ Then Run `project-maker new <project-name> <project-url>`
 This will locally save that project.
 
 And To Build it you run `project-maker build <project-name> <dir-name>`
+
+# Why Should I Use This?
+
+This cli tools incorporates git as a tool to clone the projects, while using python to set up the project.
+
+# What Does Set Up Do?
+
+A python set up file can do whatever you want it to do. The idea behind it is to be able to get a ready to be used environment immediately after running the build command. So as shown in the example I use yarn to install the dependencies by using subprocess to check if yarn is installed and installing the dependencies.
 
 # Credits
 
