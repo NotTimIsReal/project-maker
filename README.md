@@ -81,7 +81,7 @@ print("setup.project.status.sucess")
 
 ```
 
-As seen in the example you need to print "setup.project.status.sucess" for the tool to end successfully. It is recommended to also use subprocess rather than `os.system`. In order for a more cleaner output make sure any stdout and stderr are send to subprocess.DEVNULL like in the example.
+As seen in the example you need to print "setup.project.status.sucess" for the tool to end successfully. It is recommended to also use subprocess rather than `os.system`. In order for a more cleaner output make sure any stdout and stderr are sent to subprocess.DEVNULL like in the example.
 
 Then Upload Your Code To A https Git server such as github or gitlab.
 
