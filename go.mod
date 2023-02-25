@@ -1,5 +1,7 @@
 module github.com/NotTimIsReal/project-maker
+
 go 1.18
+
 require github.com/spf13/cobra v1.4.0
 
 require (
@@ -10,8 +12,8 @@ require (
 	github.com/sergi/go-diff v1.0.0 // indirect
 	github.com/src-d/gcfg v1.4.0 // indirect
 	github.com/xanzy/ssh-agent v0.2.1 // indirect
-	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4 // indirect
-	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80 // indirect
+	golang.org/x/crypto v0.1.0 // indirect
+	golang.org/x/net v0.1.0 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
@@ -19,11 +21,10 @@ require (
 require (
 	github.com/briandowns/spinner v1.18.1
 	github.com/fatih/color v1.13.0
-	github.com/go-git/go-git v4.7.0+incompatible
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )
